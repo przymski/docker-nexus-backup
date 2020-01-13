@@ -65,7 +65,7 @@ If you're running this image, or any other container image based on this,
 outside GKE you will need to create a [service account](https://cloud.google.com/iam/docs/service-accounts)
 with the "_Storage Object Creator_" and "_Storage Object Viewer_" permissions,
 download the newly furnished private key file in JSON format, mount it in the
-container and specify the mount path using the `CLOUD_IAM_SERVICE_ACCOUNT_KEY_PATH`
+container and specify the mount path using the `IAM_SERVICE_ACCOUNT_KEY_PATH`
 environment variable.
 
 ## Environment Variables
@@ -77,7 +77,7 @@ will require no changes.
 
 | Variable                             | Description                                                                                   | Default                                                     |
 |--------------------------------------|-----------------------------------------------------------------------------------------------|-------------------------------------------------------------|
-| `CLOUD_IAM_SERVICE_ACCOUNT_KEY_PATH` | (**Optional**) The path to a service account key file with which to authenticate against GCS. | (empty)                                                     |
+| `IAM_SERVICE_ACCOUNT_KEY_PATH` | (**Optional**) The path to a service account key file with which to authenticate against GCS. | (empty)                                                     |
 | `NEXUS_AUTHORIZATION`                | The authorization header to use when calling the Nexus API.                                   | `Basic YWRtaW46YWRtaW4xMjMK`                                |
 | `NEXUS_BACKUP_DIRECTORY`             | The directory to which the Nexus 'backup-2' task will produce its output.                     | `/nexus-data/backup`                                        |
 | `NEXUS_DATA_DIRECTORY`               | The Nexus data directory.                                                                     | `/nexus-data`                                               |

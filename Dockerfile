@@ -1,9 +1,9 @@
-FROM alpine:3.10
+FROM alpine:3.11
 
-LABEL maintainer devops@travelaudience.com
+LABEL maintainer p.rzymski@kainos.com
 
-# The path to the Cloud IAM service account to use when uploading backups.
-ENV CLOUD_IAM_SERVICE_ACCOUNT_KEY_PATH ""
+# The path to the AWS IAM service account to use when uploading backups.
+#ENV IAM_SERVICE_ACCOUNT_KEY_PATH ""
 # The authorization header to use when calling the Nexus API.
 ENV NEXUS_AUTHORIZATION "Basic YWRtaW46YWRtaW4xMjMK"
 
@@ -21,17 +21,14 @@ ENV OFFLINE_REPOS "maven-central maven-public maven-releases maven-snapshots"
 
 # The name of the GCS bucket to which the resulting backups will be uploaded.
 
-ENV TARGET_BUCKET "gs://nexus-backup"
+ENV TARGET_BUCKET "s3://nexus-backup"
 # The amount of time in seconds to wait between stopping repositories and starting the upload.
 ENV GRACE_PERIOD "60"
 
 WORKDIR /tmp
 
-RUN apk add --no-cache --update bash ca-certificates curl inotify-tools python openssl \
-    && wget -O google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-255.0.0-linux-x86_64.tar.gz \
-    && tar xzf google-cloud-sdk.tar.gz \
-    && rm google-cloud-sdk.tar.gz \
-    && ./google-cloud-sdk/install.sh --command-completion true --override-components gcloud gsutil --path-update true --quiet --rc-path /root/.bashrc --usage-reporting false
+RUN apk add --no-cache --update bash ca-certificates curl inotify-tools python3 pip3 openssl
+RUN pip3 install --upgrade --user awscli=1.16.309
 
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 ADD /scripts/start-repository.groovy /scripts/start-repository.groovy
